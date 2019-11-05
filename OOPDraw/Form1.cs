@@ -131,8 +131,11 @@ namespace OOPDraw
     }
     public class Rectangle : Line
     {
+        protected int Width, Height;
         public Rectangle(Pen pen) : base(pen)
         {
+            Width = Math.Abs(X1 - X2);
+            Height = Math.Abs(Y1 - Y2);
         }
         public Rectangle(int x1, int y1, int x2, int y2, Pen pen) : base(x1, y1, x2, y2, pen)
         {
@@ -149,33 +152,30 @@ namespace OOPDraw
         }
         public override void Draw(Graphics draw)
         {
-            draw.DrawRectangle(Pen, X1, Y1, X2, Y2);
+            draw.DrawRectangle(Pen, X1, Y1, Width, Height);
         }
 
     }
     public class Circle : Point
     {
-        protected int Width, Height;
+        protected int Radius;
         public Circle(Pen pen) : base(pen)
         {
             X2 = coord.Next(401);
             Y2 = coord.Next(401);
-            Width = Math.Abs(X2 - X1);
-            Height = Width;
+            Radius = Math.Abs(X2 - X1);
         }
         public Circle(int x1, int y1, int x2, int y2, Pen pen): base(x1, y1, pen)
         {
             X2 = coord.Next(401);
             Y2 = coord.Next(401);
-            Width = Math.Abs(X2 - X1);
-            Height = Width;
+            Radius = Math.Abs(X2 - X1);
         }
         public Circle(Circle obj, Pen pen) : base(obj, pen)
         {
             X2 = coord.Next(401);
             Y2 = coord.Next(401);
-            Width = Math.Abs(X2 - X1);
-            Height = Width;
+            Radius = Math.Abs(X2 - X1);
         }
         public virtual void Set(int x1, int y1, int x2, int y2)
         {
@@ -183,27 +183,27 @@ namespace OOPDraw
             Y1 = y1;
             X2 = x2;
             Y2 = y2;
-            Width = Math.Abs(X2 - X1);
-            Height = Width;
+            Radius = Math.Abs(X2 - X1);
         }
         public override void Draw(Graphics draw)
         {
-            draw.DrawEllipse(Pen, X1, Y1, Width, Height);
+            draw.DrawEllipse(Pen, X1, Y1, Radius, Radius);
         }
     }
     public class Ellipse : Circle
     {
+        protected int Radius2;
         public Ellipse(Pen pen) : base(pen)
         {
-            Height = Math.Abs(Y2 - Y1);
+            Radius2 = Math.Abs(Y2 - Y1);
         }
         public Ellipse(int x1, int y1, int x2, int y2, Pen pen) : base(x1, y1, x2, y2, pen)
         {
-            Height = Math.Abs(Y2 - Y1);
+            Radius2 = Math.Abs(Y2 - Y1);
         }
         public Ellipse(Ellipse obj, Pen pen) : base(obj, pen)
         {
-            Height = Math.Abs(Y2 - Y1);
+            Radius2 = Math.Abs(Y2 - Y1);
         }
         public override void Set(int x1, int y1, int x2, int y2)
         {
@@ -211,12 +211,12 @@ namespace OOPDraw
             Y1 = y1;
             X2 = x2;
             Y2 = y2;
-            Width = Math.Abs(X2 - X1);
-            Height = Math.Abs(Y2 - Y1);
+            Radius = Math.Abs(X2 - X1);
+            Radius2 = Math.Abs(Y2 - Y1);
         }
         public override void Draw(Graphics draw)
         {
-            draw.DrawEllipse(Pen, X1, Y1, Width, Height);
+            draw.DrawEllipse(Pen, X1, Y1, Radius, Radius2);
         }
     }
 }
