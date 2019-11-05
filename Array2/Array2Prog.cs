@@ -11,7 +11,7 @@ namespace Array2
         static void Main(string[] args)
         {
             Console.WriteLine("Размер матрицы: "); int N = int.Parse(Console.ReadLine());
-            float[] mtx = new float[N]; int index;
+            float[] mtx = new float[N];
             Console.WriteLine("Введите члены матрицы по-очереди");
             for (int i = 0; i < N; i++)
                 mtx[i] = float.Parse(Console.ReadLine());
@@ -93,7 +93,7 @@ namespace Array2
             {
                 int o = minind;
                 minind = maxind + 1;
-                maxind = o;
+                maxind = o - 1;
             }
             for (; minind < maxind; minind++)
                 sum += a[minind];

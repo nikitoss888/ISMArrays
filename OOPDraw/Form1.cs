@@ -1,0 +1,221 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace OOPDraw
+{    public partial class OOPDrawForm : Form
+    {
+        Bitmap Canvas;
+        public OOPDrawForm()
+        {
+            InitializeComponent();
+            Canvas = new Bitmap(DrawBox.Width, DrawBox.Height);
+        }
+        private void DrawBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DrawButton_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            Graphics draw = DrawBox.CreateGraphics();
+            Pen pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2);
+            ShapePoint[] shapes = new ShapePoint[20];
+            int r_shape;
+            for(int i = 0; i < shapes.Length; i++)
+            {
+                switch (r_shape = rnd.Next(1,6))
+                {
+                    case 1:
+                        shapes[i] = new ShapePoint(pen);
+                        break;
+                    case 2:
+                        shapes[i] = new Line(pen);
+                        break;
+                    case 3:
+                        shapes[i] = new Rectangle(pen);
+                        break;
+                    case 4:
+                        shapes[i] = new Circle(pen);
+                        break;
+                    case 5:
+                        shapes[i] = new Ellipse(pen);
+                        break;
+                }
+                shapes[i].Draw(draw);
+            }
+        }
+
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            Graphics draw = DrawBox.CreateGraphics();
+            Brush clear = new SolidBrush(Color.White);
+            RectangleF Clear = new RectangleF(0, 0, DrawBox.Width, DrawBox.Height);
+            draw.FillRectangle(clear, Clear);
+        }
+    }
+
+    public class ShapePoint
+    {
+        protected int X1, Y1, X2, Y2;
+        protected Random coord = new Random();
+        protected Pen Pen;
+        public ShapePoint(Pen pen)
+        {
+            X1 = coord.Next(400);
+            X2 = X1 + 1;
+            Y1 = coord.Next(400);
+            Y2 = Y1;
+            Pen = pen;
+        }
+        public ShapePoint(int x1, int y1, Pen pen)
+        {
+            X1 = x1;
+            X2 = X1 + 1;
+            Y1 = y1;
+            Y2 = Y1;
+            Pen = pen;
+        }
+        public ShapePoint(ShapePoint obj, Pen pen)
+        {
+            X1 = obj.X1;
+            Y1 = obj.Y1;
+            X2 = X2 + 1;
+            Y2 = Y1;
+            Pen = pen;
+        }
+        public virtual void Set(int x1, int y1)
+        {
+            X1 = x1;
+            Y1 = y1;
+            X2 = X2 + 1;
+            Y2 = Y1;
+        }
+        public virtual void Draw(Graphics draw)
+        {
+            draw.DrawLine(Pen, X1, Y1, X2, Y2);
+        }
+    }
+    public class Line : ShapePoint
+    {
+        protected int X2, Y2;
+        public Line(Pen pen) : base(pen)
+        {
+            X2 = coord.Next(400);
+            Y2 = coord.Next(400);
+        }
+        public Line(int x1, int y1, int x2, int y2, Pen pen) : base(x1, y1, pen)
+        {
+
+            X2 = x2;
+            Y2 = y2;
+        }
+        public Line(Line obj, Pen pen) : base(obj, pen)
+        {
+            X2 = obj.X2;
+            Y2 = obj.Y2;
+        }
+        public virtual void Set(int x1, int y1, int x2, int y2)
+        {
+            X1 = x1;
+            Y2 = y2;
+            X2 = x2;
+            Y2 = y2;
+        }
+        public override void Draw(Graphics draw)
+        {
+            draw.DrawLine(Pen, X1, Y1, X2, Y2);
+        }
+    }
+    public class Rectangle : Line
+    {
+        public Rectangle(Pen pen) : base(pen)
+        {
+        }
+        public Rectangle(int x1, int y1, int x2, int y2, Pen pen) : base(x1, y1, x2, y2, pen)
+        {
+        }
+        public Rectangle(Rectangle obj, Pen pen) : base(obj, pen)
+        {
+        }
+        public override void Set(int x1, int y1, int x2, int y2)
+        {
+            X1 = x1;
+            Y2 = y2;
+            X2 = x2;
+            Y2 = y2;
+        }
+        public override void Draw(Graphics draw)
+        {
+            draw.DrawRectangle(Pen, X1, Y1, X2, Y2);
+        }
+
+    }
+    public class Circle : ShapePoint
+    {
+        protected int Width, Height;
+        public Circle(Pen pen) : base(pen)
+        {
+            X2 = coord.Next(401);
+            Y2 = coord.Next(401);
+            Width = Math.Abs(X2 - X1);
+            Height = Width;
+        }
+        public Circle(int x1, int y1, int x2, int y2, Pen pen): base(x1, y1, pen)
+        {
+            X2 = coord.Next(401);
+            Y2 = coord.Next(401);
+            Width = Math.Abs(X2 - X1);
+            Height = Width;
+        }
+        public Circle(Circle obj, Pen pen) : base(obj, pen)
+        {
+            X2 = coord.Next(401);
+            Y2 = coord.Next(401);
+            Width = Math.Abs(X2 - X1);
+            Height = Width;
+        }
+        public virtual void Set(int x1, int y1, int x2, int y2)
+        {
+            X1 = x1;
+            Y1 = y1;
+            X2 = x2;
+            Y2 = y2;
+            Width = Math.Abs(X2 - X1);
+            Height = Width;
+        }
+        public override void Draw(Graphics draw)
+        {
+            draw.DrawEllipse(Pen, X1, Y1, Width, Height);
+        }
+    }
+    public class Ellipse : Circle
+    {
+        public Ellipse(Pen pen) : base(pen)
+        {
+            Height = Math.Abs(Y2 - Y1);
+        }
+        public Ellipse(int x1, int y1, int x2, int y2, Pen pen) : base(x1, y1, x2, y2, pen)
+        {
+            Height = Math.Abs(Y2 - Y1);
+        }
+        public Ellipse(Ellipse obj, Pen pen) : base(obj, pen)
+        {
+            Height = Math.Abs(Y2 - Y1);
+        }
+        public override void Set(int x1, int y1, int x2, int y2)
+        {
+            X1 = x1;
+            Y1 = y1;
+            X2 = x2;
+            Y2 = y2;
+            Width = Math.Abs(X2 - X1);
+            Height = Math.Abs(Y2 - Y1);
+        }
+        public override void Draw(Graphics draw)
+        {
+            draw.DrawEllipse(Pen, X1, Y1, Width, Height);
+        }
+    }
+}
