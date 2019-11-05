@@ -28,7 +28,7 @@ namespace OOPDraw
                 switch (r_shape = rnd.Next(1,6))
                 {
                     case 1:
-                        shapes[i] = new ShapePoint(pen);
+                        shapes[i] = new Point(pen);
                         break;
                     case 2:
                         shapes[i] = new Line(pen);
@@ -62,15 +62,15 @@ namespace OOPDraw
         protected Pen Pen;
         abstract public void Draw(Graphics draw);
     }
-    public class ShapePoint : Shape
+    public class Point : Shape
     {
-        public ShapePoint(Pen pen)
+        public Point(Pen pen)
         {
             X1 = coord.Next(200);
             Y1 = coord.Next(200);
             Pen = pen;
         }
-        public ShapePoint(int x1, int y1, Pen pen)
+        public Point(int x1, int y1, Pen pen)
         {
             X1 = x1;
             X2 = X1 + 1;
@@ -78,7 +78,7 @@ namespace OOPDraw
             Y2 = Y1;
             Pen = pen;
         }
-        public ShapePoint(ShapePoint obj, Pen pen)
+        public Point(Point obj, Pen pen)
         {
             X1 = obj.X1;
             Y1 = obj.Y1;
@@ -98,7 +98,7 @@ namespace OOPDraw
             draw.DrawEllipse(Pen, X1, Y1, 1, 1);
         }
     }
-    public class Line : ShapePoint
+    public class Line : Point
     {
         protected int X2, Y2;
         public Line(Pen pen) : base(pen)
@@ -153,7 +153,7 @@ namespace OOPDraw
         }
 
     }
-    public class Circle : ShapePoint
+    public class Circle : Point
     {
         protected int Width, Height;
         public Circle(Pen pen) : base(pen)
