@@ -66,8 +66,8 @@ namespace OOPDraw
     {
         public Point(Pen pen)
         {
-            X1 = coord.Next(200);
-            Y1 = coord.Next(200);
+            X1 = coord.Next(301);
+            Y1 = coord.Next(301);
             Pen = pen;
         }
         public Point(int x1, int y1, Pen pen)
@@ -97,8 +97,8 @@ namespace OOPDraw
         protected int X2, Y2;
         public Line(Pen pen) : base(pen)
         {
-            X2 = coord.Next(200);
-            Y2 = coord.Next(200);
+            X2 = coord.Next(301);
+            Y2 = coord.Next(301);
         }
         public Line(int x1, int y1, int x2, int y2, Pen pen) : base(x1, y1, pen)
         {
