@@ -57,7 +57,7 @@ namespace OOPDraw
     }
     public abstract class Shape
     {
-        protected int X1, Y1, X2, Y2;
+        protected int X1, Y1;
         protected Random coord = new Random();
         protected Pen Pen;
         abstract public void Draw(Graphics draw);
@@ -73,25 +73,19 @@ namespace OOPDraw
         public Point(int x1, int y1, Pen pen)
         {
             X1 = x1;
-            X2 = X1 + 1;
             Y1 = y1;
-            Y2 = Y1;
             Pen = pen;
         }
         public Point(Point obj, Pen pen)
         {
             X1 = obj.X1;
             Y1 = obj.Y1;
-            X2 = X2 + 1;
-            Y2 = Y1;
             Pen = pen;
         }
         public virtual void Set(int x1, int y1)
         {
             X1 = x1;
             Y1 = y1;
-            X2 = X2 + 1;
-            Y2 = Y1;
         }
         public override void Draw(Graphics draw)
         {
@@ -158,6 +152,7 @@ namespace OOPDraw
     }
     public class Circle : Point
     {
+        protected int X2, Y2;
         protected int Radius;
         public Circle(Pen pen) : base(pen)
         {
