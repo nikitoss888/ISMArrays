@@ -38,7 +38,7 @@
             // DrawBox
             // 
             this.DrawBox.BackColor = System.Drawing.Color.White;
-            this.DrawBox.Location = new System.Drawing.Point(40, 10);
+            this.DrawBox.Location = new System.Drawing.Point(40, 12);
             this.DrawBox.Name = "DrawBox";
             this.DrawBox.Size = new System.Drawing.Size(400, 400);
             this.DrawBox.TabIndex = 0;

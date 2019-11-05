@@ -21,7 +21,7 @@ namespace OOPDraw
             Random rnd = new Random();
             Graphics draw = DrawBox.CreateGraphics();
             Pen pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2);
-            ShapePoint[] shapes = new ShapePoint[20];
+            Shape[] shapes = new Shape[20];
             int r_shape;
             for(int i = 0; i < shapes.Length; i++)
             {
@@ -55,18 +55,19 @@ namespace OOPDraw
             draw.FillRectangle(clear, Clear);
         }
     }
-
-    public class ShapePoint
+    public abstract class Shape
     {
         protected int X1, Y1, X2, Y2;
         protected Random coord = new Random();
         protected Pen Pen;
+        abstract public void Draw(Graphics draw);
+    }
+    public class ShapePoint : Shape
+    {
         public ShapePoint(Pen pen)
         {
-            X1 = coord.Next(400);
-            X2 = X1 + 1;
-            Y1 = coord.Next(400);
-            Y2 = Y1;
+            X1 = coord.Next(200);
+            Y1 = coord.Next(200);
             Pen = pen;
         }
         public ShapePoint(int x1, int y1, Pen pen)
@@ -92,9 +93,9 @@ namespace OOPDraw
             X2 = X2 + 1;
             Y2 = Y1;
         }
-        public virtual void Draw(Graphics draw)
+        public override void Draw(Graphics draw)
         {
-            draw.DrawLine(Pen, X1, Y1, X2, Y2);
+            draw.DrawEllipse(Pen, X1, Y1, 1, 1);
         }
     }
     public class Line : ShapePoint
@@ -102,8 +103,8 @@ namespace OOPDraw
         protected int X2, Y2;
         public Line(Pen pen) : base(pen)
         {
-            X2 = coord.Next(400);
-            Y2 = coord.Next(400);
+            X2 = coord.Next(200);
+            Y2 = coord.Next(200);
         }
         public Line(int x1, int y1, int x2, int y2, Pen pen) : base(x1, y1, pen)
         {
