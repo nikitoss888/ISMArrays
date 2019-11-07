@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace OOPDraw
 {    public partial class OOPDrawForm : Form
     {
-        Bitmap Canvas;
+        protected List<Shape> shapes;
+        protected Bitmap Canvas;
         public OOPDrawForm()
         {
             InitializeComponent();
@@ -18,33 +20,37 @@ namespace OOPDraw
 
         private void DrawButton_Click(object sender, EventArgs e)
         {
+            shapes = new List<Shape>();
             Random rnd = new Random();
             Graphics draw = DrawBox.CreateGraphics();
             Pen pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2);
-            Shape[] shapes = new Shape[20];
-            int r_shape;
-            for(int i = 0; i < shapes.Length; i++)
+            int randomShape;
+            for (int i = 0; i < 20; i++)
             {
-                switch (r_shape = rnd.Next(1,6))
+                switch (randomShape = rnd.Next(0, 5))
                 {
+                    case 0:
+                        shapes.Add(new Point(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height), pen));
+                        break;
                     case 1:
-                        shapes[i] = new Point(pen);
+                        shapes.Add(new Line(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height), pen));
                         break;
                     case 2:
-                        shapes[i] = new Line(pen);
+                        shapes.Add(new Rectangle(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            rnd.Next(0, DrawBox.Width), rnd.Next(DrawBox.Height), pen));
                         break;
                     case 3:
-                        shapes[i] = new Rectangle(pen);
+                        shapes.Add(new Circle(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height), pen));
                         break;
                     case 4:
-                        shapes[i] = new Circle(pen);
-                        break;
-                    case 5:
-                        shapes[i] = new Ellipse(pen);
+                        shapes.Add(new Ellipse(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height), pen));
                         break;
                 }
-                shapes[i].Draw(draw);
             }
+            DrawBox.Refresh();
         }
 
         private void ClearButton_Click(object sender, EventArgs e)
@@ -53,6 +59,32 @@ namespace OOPDraw
             Brush clear = new SolidBrush(Color.White);
             RectangleF Clear = new RectangleF(0, 0, DrawBox.Width, DrawBox.Height);
             draw.FillRectangle(clear, Clear);
+        }
+
+        private void DrawBox_Paint(object sender, PaintEventArgs e)
+        {
+            if (shapes != null)
+            {
+                for(int i = 0; i < shapes.Count; i++)
+                {
+                    shapes[i].Draw(e.Graphics);
+                }
+            }
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            int number = (int)numericUpDownRemoveShape.Value;
+            if(number < shapes.Count)
+            {
+                shapes.RemoveAt(number);
+            }
+            DrawBox.Refresh();
+        }
+
+        private void comboBoxAdd_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
     public abstract class Shape
@@ -133,9 +165,13 @@ namespace OOPDraw
         }
         public Rectangle(int x1, int y1, int x2, int y2, Pen pen) : base(x1, y1, x2, y2, pen)
         {
+            Width = Math.Abs(X1 - X2);
+            Height = Math.Abs(Y1 - Y2);
         }
         public Rectangle(Rectangle obj, Pen pen) : base(obj, pen)
         {
+            Width = Math.Abs(X1 - obj.X2) - 1;
+            Height = Math.Abs(Y1 - obj.Y2) - 1;
         }
         public override void Set(int x1, int y1, int x2, int y2)
         {
@@ -146,7 +182,7 @@ namespace OOPDraw
         }
         public override void Draw(Graphics draw)
         {
-            draw.DrawRectangle(Pen, X1, Y1, Width, Height);
+            draw.DrawRectangle(Pen, X1 - Width / 2, Y1 - Height / 2, Width, Height);
         }
 
     }
@@ -182,7 +218,7 @@ namespace OOPDraw
         }
         public override void Draw(Graphics draw)
         {
-            draw.DrawEllipse(Pen, X1, Y1, Radius, Radius);
+            draw.DrawEllipse(Pen, X1 - Radius / 2, Y1 - Radius / 2, Radius, Radius);
         }
     }
     public class Ellipse : Circle
@@ -211,7 +247,7 @@ namespace OOPDraw
         }
         public override void Draw(Graphics draw)
         {
-            draw.DrawEllipse(Pen, X1, Y1, Radius, Radius2);
+            draw.DrawEllipse(Pen, X1 - Radius / 2, Y1 - Radius2 / 2, Radius, Radius2);
         }
     }
 }
