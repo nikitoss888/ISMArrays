@@ -8,6 +8,7 @@ namespace OOPDraw
     {
         protected List<Shape> shapes;
         protected Bitmap Canvas;
+        protected Random rnd = new Random();
         public OOPDrawForm()
         {
             InitializeComponent();
@@ -21,38 +22,41 @@ namespace OOPDraw
         private void DrawButton_Click(object sender, EventArgs e)
         {
             shapes = new List<Shape>();
-            Random rnd = new Random();
             Graphics draw = DrawBox.CreateGraphics();
-            Pen pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2);
+            Pen pen;
             int randomShape;
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < trackBarDrawings.Value; i++)
             {
                 switch (randomShape = rnd.Next(0, 5))
                 {
                     case 0:
-                        shapes.Add(new Point(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height), pen));
+                        shapes.Add(new Point(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
                         break;
                     case 1:
                         shapes.Add(new Line(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
-                            rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height), pen));
+                            rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
                         break;
                     case 2:
                         shapes.Add(new Rectangle(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
-                            rnd.Next(0, DrawBox.Width), rnd.Next(DrawBox.Height), pen));
+                            rnd.Next(0, DrawBox.Width), rnd.Next(DrawBox.Height),
+                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
                         break;
                     case 3:
                         shapes.Add(new Circle(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
-                            rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height), pen));
+                            rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
                         break;
                     case 4:
                         shapes.Add(new Ellipse(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
-                            rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height), pen));
+                            rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
                         break;
                 }
             }
             DrawBox.Refresh();
         }
-
         private void ClearButton_Click(object sender, EventArgs e)
         {
             Graphics draw = DrawBox.CreateGraphics();
@@ -74,17 +78,80 @@ namespace OOPDraw
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            int number = (int)numericUpDownRemoveShape.Value;
-            if(number < shapes.Count)
-            {
-                shapes.RemoveAt(number);
-            }
-            DrawBox.Refresh();
+        
         }
 
         private void comboBoxAdd_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Pen pen;
+            if (shapes == null)
+            {
+                shapes = new List<Shape>();
+            }
+            for (int i = 0; i < trackBarDrawings.Value; i++)
+            {
+                switch (comboBoxAdd.SelectedIndex)
+                {
+                    case 0:
+                        shapes.Add(new Point(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                        break;
+                    case 1:
+                        shapes.Add(new Line(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                        break;
+                    case 2:
+                        shapes.Add(new Rectangle(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            rnd.Next(0, DrawBox.Width), rnd.Next(DrawBox.Height),
+                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                        break;
+                    case 3:
+                        shapes.Add(new Circle(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                        break;
+                    case 4:
+                        shapes.Add(new Ellipse(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
+                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                        break;
+                }
+            }
+            DrawBox.Refresh();
+        }
+
+        private void buttonRemove_Click(object sender, EventArgs e)
+        {
+            int number = (int)numericUpDownRemoveShape.Value;
+            if (shapes == null)
+            {
+                shapes = new List<Shape>();
+            }
+            if (number < shapes.Count)
+            {
+                shapes.RemoveAt(number);
+                DrawBox.Refresh();
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+            DrawBox.BackColor = Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256));
+        }
+
+        private void buttonChooseFontColor_Click(object sender, EventArgs e)
+        {
+            if(colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                DrawBox.BackColor = colorDialog.Color;
+            }
         }
     }
     public abstract class Shape
