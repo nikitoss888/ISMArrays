@@ -7,12 +7,13 @@ namespace OOPDraw
 {    public partial class OOPDrawForm : Form
     {
         protected List<Shape> shapes;
-        protected Bitmap Canvas;
         protected Random rnd = new Random();
+        protected Pen pen;
+        protected Color color;
+
         public OOPDrawForm()
         {
             InitializeComponent();
-            Canvas = new Bitmap(DrawBox.Width, DrawBox.Height);
         }
         private void DrawBox_Click(object sender, EventArgs e)
         {
@@ -21,37 +22,45 @@ namespace OOPDraw
 
         private void DrawButton_Click(object sender, EventArgs e)
         {
-            shapes = new List<Shape>();
+            if (shapes == null)
+            {
+                shapes = new List<Shape>();
+            }
             Graphics draw = DrawBox.CreateGraphics();
-            Pen pen;
             int randomShape;
+            if (checkBoxColorOfShapes.Checked)
+            {
+                color = colorDialog.Color;
+            }
+            else
+                color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
             for (int i = 0; i < trackBarDrawings.Value; i++)
             {
                 switch (randomShape = rnd.Next(0, 5))
                 {
                     case 0:
                         shapes.Add(new Point(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
-                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                            pen = new Pen(color, 2)));
                         break;
                     case 1:
                         shapes.Add(new Line(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
                             rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
-                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                            pen = new Pen(color, 2)));
                         break;
                     case 2:
                         shapes.Add(new Rectangle(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
                             rnd.Next(0, DrawBox.Width), rnd.Next(DrawBox.Height),
-                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                            pen = new Pen(color, 2)));
                         break;
                     case 3:
                         shapes.Add(new Circle(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
                             rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
-                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                            pen = new Pen(color, 2)));
                         break;
                     case 4:
                         shapes.Add(new Ellipse(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
                             rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
-                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                            pen = new Pen(color, 2)));
                         break;
                 }
             }
@@ -63,6 +72,7 @@ namespace OOPDraw
             Brush clear = new SolidBrush(Color.White);
             RectangleF Clear = new RectangleF(0, 0, DrawBox.Width, DrawBox.Height);
             draw.FillRectangle(clear, Clear);
+            shapes = null;
         }
 
         private void DrawBox_Paint(object sender, PaintEventArgs e)
@@ -93,33 +103,39 @@ namespace OOPDraw
             {
                 shapes = new List<Shape>();
             }
+            if (checkBoxColorOfShapes.Checked)
+            {
+                color = colorDialog.Color;
+            }
+            else
+                color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
             for (int i = 0; i < trackBarDrawings.Value; i++)
             {
                 switch (comboBoxAdd.SelectedIndex)
                 {
                     case 0:
                         shapes.Add(new Point(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
-                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                            pen = new Pen(color, 2)));
                         break;
                     case 1:
                         shapes.Add(new Line(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
                             rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
-                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                            pen = new Pen(color, 2)));
                         break;
                     case 2:
                         shapes.Add(new Rectangle(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
                             rnd.Next(0, DrawBox.Width), rnd.Next(DrawBox.Height),
-                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                            pen = new Pen(color, 2)));
                         break;
                     case 3:
                         shapes.Add(new Circle(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
                             rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
-                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                            pen = new Pen(color, 2)));
                         break;
                     case 4:
                         shapes.Add(new Ellipse(rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
                             rnd.Next(0, DrawBox.Width), rnd.Next(0, DrawBox.Height),
-                            pen = new Pen(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), 2)));
+                            pen = new Pen(color, 2)));
                         break;
                 }
             }
@@ -128,7 +144,7 @@ namespace OOPDraw
 
         private void buttonRemove_Click(object sender, EventArgs e)
         {
-            int number = (int)numericUpDownRemoveShape.Value;
+            int number = (int)numericUpDownNumOfShape.Value;
             if (shapes == null)
             {
                 shapes = new List<Shape>();
@@ -153,6 +169,61 @@ namespace OOPDraw
                 DrawBox.BackColor = colorDialog.Color;
             }
         }
+
+        private void checkBoxColorOfShapes_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxColorOfShapes.Checked)
+            {
+                buttonChangeColorOfDrawings.Visible = true;
+            }
+            else
+                buttonChangeColorOfDrawings.Visible = false;
+        }
+
+        private void buttonChangeColorOfDrawings_Click(object sender, EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                color = colorDialog.Color;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (textBoxChangeX.Text == null)
+            {
+                textBoxChangeX.Text = "0";
+            }
+            if (textBoxChangeY.Text == null)
+            {
+                textBoxChangeY.Text = "0";
+            }
+            if (shapes != null && textBoxChangeX.Text != "0" && textBoxChangeY.Text != "0")
+            {
+                shapes[(int)numericUpDownNumOfShape.Value].CoordsChange(int.Parse(textBoxChangeX.Text), int.Parse(textBoxChangeY.Text));
+                DrawBox.Refresh();
+            }
+        }
+
+        private void buttonMoveAll_Click(object sender, EventArgs e)
+        {
+            if (textBoxChangeX.Text == null)
+            {
+                textBoxChangeX.Text = "0";
+            }
+            if (textBoxChangeY.Text == null)
+            {
+                textBoxChangeY.Text = "0";
+            }
+            if (shapes != null && textBoxChangeX.Text != "0" && textBoxChangeY.Text != "0")
+            {
+                for (int i = 0; i < shapes.Count; i++)
+                {
+                    shapes[i].CoordsChange(int.Parse(textBoxChangeX.Text), int.Parse(textBoxChangeY.Text));
+                }
+                DrawBox.Refresh();
+            }
+        }
     }
     public abstract class Shape
     {
@@ -160,6 +231,7 @@ namespace OOPDraw
         protected Random coord = new Random();
         protected Pen Pen;
         abstract public void Draw(Graphics draw);
+        abstract public void CoordsChange(int dX, int dY);
     }
     public class Point : Shape
     {
@@ -189,6 +261,11 @@ namespace OOPDraw
         public override void Draw(Graphics draw)
         {
             draw.DrawEllipse(Pen, X1, Y1, 1, 1);
+        }
+        public override void CoordsChange(int dX, int dY)
+        {
+            X1 -= dX;
+            Y1 -= dY;
         }
     }
     public class Line : Point
@@ -221,6 +298,12 @@ namespace OOPDraw
         {
             draw.DrawLine(Pen, X1, Y1, X2, Y2);
         }
+        public override void CoordsChange(int dX, int dY)
+        {
+            base.CoordsChange(dX, dY);
+            X2 -= dX;
+            Y2 -= dY;
+        }
     }
     public class Rectangle : Line
     {
@@ -251,7 +334,12 @@ namespace OOPDraw
         {
             draw.DrawRectangle(Pen, X1 - Width / 2, Y1 - Height / 2, Width, Height);
         }
-
+        public override void CoordsChange(int dX, int dY)
+        {
+            base.CoordsChange(dX, dY);
+            X2 -= dX;
+            Y2 -= dY;
+        }
     }
     public class Circle : Point
     {
@@ -287,6 +375,12 @@ namespace OOPDraw
         {
             draw.DrawEllipse(Pen, X1 - Radius / 2, Y1 - Radius / 2, Radius, Radius);
         }
+        public override void CoordsChange(int dX, int dY)
+        {
+            base.CoordsChange(dX, dY);
+            X2 -= dX;
+            Y2 -= dY;
+        }
     }
     public class Ellipse : Circle
     {
@@ -315,6 +409,12 @@ namespace OOPDraw
         public override void Draw(Graphics draw)
         {
             draw.DrawEllipse(Pen, X1 - Radius / 2, Y1 - Radius2 / 2, Radius, Radius2);
+        }
+        public override void CoordsChange(int dX, int dY)
+        {
+            base.CoordsChange(dX, dY);
+            X2 -= dX;
+            Y2 -= dY;
         }
     }
 }
