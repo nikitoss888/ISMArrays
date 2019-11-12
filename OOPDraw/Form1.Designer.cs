@@ -136,9 +136,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DrawBox.BackColor = System.Drawing.Color.White;
-            this.DrawBox.Location = new System.Drawing.Point(0, 0);
+            this.DrawBox.Location = new System.Drawing.Point(12, 12);
             this.DrawBox.Name = "DrawBox";
-            this.DrawBox.Size = new System.Drawing.Size(807, 412);
+            this.DrawBox.Size = new System.Drawing.Size(782, 400);
             this.DrawBox.TabIndex = 0;
             this.DrawBox.TabStop = false;
             this.DrawBox.Click += new System.EventHandler(this.DrawBox_Click);
@@ -349,6 +349,7 @@
             this.Controls.Add(this.DrawBox);
             this.MaximumSize = new System.Drawing.Size(1800, 1024);
             this.MinimumSize = new System.Drawing.Size(822, 600);
+            this.Name = "OOPDrawForm";
             this.Text = "OOPDraw";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumOfShape)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawBox)).EndInit();

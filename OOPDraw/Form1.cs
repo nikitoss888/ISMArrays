@@ -69,7 +69,7 @@ namespace OOPDraw
         private void ClearButton_Click(object sender, EventArgs e)
         {
             Graphics draw = DrawBox.CreateGraphics();
-            Brush clear = new SolidBrush(Color.White);
+            Brush clear = new SolidBrush(DrawBox.BackColor);
             RectangleF Clear = new RectangleF(0, 0, DrawBox.Width, DrawBox.Height);
             draw.FillRectangle(clear, Clear);
             shapes = null;
